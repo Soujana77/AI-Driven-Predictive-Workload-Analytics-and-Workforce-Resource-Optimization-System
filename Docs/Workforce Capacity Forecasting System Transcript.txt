@@ -1,0 +1,188 @@
+Workforce Capacity Forecasting System
+Fri, Oct 9, 2026
+
+0:17 - Soujanya jain
+Shall we start, sir? Sir, shall we start? Good afternoon everyone. Good afternoon, sir. Today we are here to present the first review of our project Phase 1 for the final year. Our project's title is Agent TKI Driven Workforce Capacity Forecasting Resource Optimization System and our team members are Sujan Tejaswini, UM Vinaya and Vinay Kumar. First slide, please. Okay, let me give a brief introduction about our project.
+
+ The main idea of our project is to improve workload and workforce management in an organization. Employees may work on multiple projects and tasks, and their workload keeps changing depending on deadlines, task duration, priorities. And availability. Traditionally, managers mainly used spreadsheet, historical records, and manual estimation to manage this workload. These methods can show the current workload, but they have limited ability to predict future workload and capacity problems.
+
+ So, we have proposed a solution where a system uses AI-based workload forecasting and workforce capacity analysis to help managers and understand. Future workload to make better planning and better decisions. Let me give an introduction about the problem statement. The main problem we are addressing is the difficulty of managing the changing workload and employee assignment across different projects.
+
+ A manager has to consider many factors like the task, workload, task duration, deadlines, priorities, employee availability. Working capacity, and historical workload. There are so many aspects for a manager to consider. When all these factors are analyzed, manually, it becomes very difficult to accurately predict future workload because of this problem, such as employee overload, underutilization, and capacity gaps, may not be identified early.
+
+ Therefore, there is a need for an intelligent system that can predict future workload and support workforce planning to make better decisions. And the main affected stakeholders in our project are the project managers, team leaders, workforce planners, and the organizations. And about the motivation. Next slide. There are actually five motives for the project to select this project. Manual workload planning becomes difficult when the workload keeps changing.
+
+ Managers need to know in advance whether the available foods will be enough for the expected workload. And the one more thing is if workload or resource shortages can be identified early, managers can take corrective actions before they affect the project progress. Therefore, we use AI to convert historical workload into predictive insights that can support better workforce planning. Now, the further part will be continued by Vinay.
+
+
+
+4:53 - BABU SAB ASSISTANT PROFESSOR
+Meena, can you share the PPT?
+
+4:56 - Vinay
+Okay, sir. Objectives. Our project have five major objectives. First, we aim to analyze the historical and current workload data to identify the workload patterns. And second, one, we aim to develop an AI-based model for forecasting the further workload. And third, we will analyze the workforce capacity and identify the overload, underlighted and capacity gaps. And the fourth one, the system will generate the resources planning recommendations such as task redistribution and rescheduling.
+
+ And finally, we will develop an interactive dashboard to display the workload, forecasting, risk, and work planning information.
+
+5:46 - BABU SAB ASSISTANT PROFESSOR
+Next slide.
+
+5:54 - Vinay
+Existing systems and literacy survey. Before developing our proposed system, we studied the existing research related to the workload forecasting resources for predicting workforce forecasting and resource allocation. For example, Kumar used the machine learning for workload forecasting and resource management, but we studied the workload and research prediction using the deep learning. Nizam and Tazim4 combined the machine learning with optimization for resource allocation.
+
+ And Mitra focused on workload forecasting using the machine learning model. This study shows that the AI and machine learning can be useful for the workload.
+
+6:42 - BABU SAB ASSISTANT PROFESSOR
+Leave the literature survey. Next, continue.
+
+6:53 - Sujan Neelgund
+Next slide will be explained by Kar.
+
+7:00 - Sujan Neelgund
+Hello everyone, I'm Sujan.
+
+7:02 - Sujan Neelgund
+To now moving on to the research gap identified from our literature survey. From the existing research we found that AI and machine learning are already being used for workload forecasting, resource prediction, workload, workforce forecasting. And resource allocation. However, these are these are often handled separately, but our project aims to build and bring all these features together in one platform.
+
+ It combines workload forecasting, workforce capacity analysis, risk detection and risk planning recommendation all together. The main difference is that our system does not just predict future workload, it also helps managers decide how to distribute work properly and use available employees effectively. So, Proposed system is an AI-driven decision support platform designed to help organization forecast workload and manage their workflows effectively.
+
+ Based on this comparison, the system identifies possible problems such as employee overload, under utilization, and capacity gaps where the available workforce may not be sufficient. So, to address these issues, the system provides recommendations such as redistributing tasks, rescheduling work, or identifying the need for additional employees. Finally, all the poor cash. Risks and recommendations are displayed through an interactive dashboard, helping managers make better workflows.
+
+ Yes, sir. So now let me explain the workflow of our proposed system. As shown in the diagram, our system has seven layers. First, the data input layer collects employee data, task information, historical workflow. Deadlines, and project details. Second, the data processing layer cleans and prepares the collected data for analysis. Third, the AI workload forecasting layer uses suitable machine learning techniques to predict future workload.
+
+ Fourth, the workforce capacity analysis layer compares the predicted workload with the available employee capacity. Fifth, the workload risk detection layer identifies problems such as overload, underutilization, capacity gaps. Sixth, the resource planning layer provides suggestions like task distribution, rescheduling and additional resource allocation. Finally, the manager dashboard displays the workload forecast and capacity analysis.
+
+ This colours and recommendations in an easy to understand format. So, overall workflow is data input. To data processing and then forecasting the analyzed data and capacity analysis and risk detection. So, moving to the resource planning onto the manager dashboard. So, this is how our proposed system helps manager plan and manage their workflows more effectively. So, this was my question.
+
+10:28 - BABU SAB ASSISTANT PROFESSOR
+Explain the forecasting layer technique. Go to previous class explain the capacity analysis layer workforce which algorithm and which techniques we are using.
+
+11:06 - Sujan Neelgund
+I'm not sure about the algorithms, to be honest.
+
+11:12 - BABU SAB ASSISTANT PROFESSOR
+Directly, you are saying the analysis there. Capacity to the direction analysis, I think, capacity gap, C to the A is related to. Okay. Next. Still not prepared by explain proposed models.
+
+11:40 - Tejaswini Ks
+So good afternoon, sir.
+
+11:42 - Tejaswini Ks
+So I'll now expect the proposed models of the system. The system is majorly divided into four modules. The first module is this workforce and task management. It mainly handles employee information uh the task details deadlines and uh availability and workload records the second main module is uh data pre-processing and ai forecasting uh this performs uh data pre-processing the feature engineering uh workload uh what is meaning of processing what is meaning of pre-processing So the data is the raid the raw data is uh collected and uh is extracted and transformed and processed.
+
+
+
+12:33 - BABU SAB ASSISTANT PROFESSOR
+Which technique you are using for pre-processing?
+
+12:41 - Tejaswini Ks
+So feature engineering process.
+
+12:49 - Unidentified Speaker
+What?
+
+12:50 - BABU SAB ASSISTANT PROFESSOR
+Which are engineering? Which technique you are using for data pre-processing techniques? Explain pre-processing steps. Explain the pre-processing steps.
+
+13:18 - Tejaswini Ks
+So the data is extracted and it is transform uh the the raw data is transformed and uh selecting uh um selected variables from the raw data to create the specific input features mainly for machine learning purpose.
+
+13:43 - BABU SAB ASSISTANT PROFESSOR
+Define machine learning. Dada Sami?
+
+13:54 - Tejaswini Ks
+Yes, sir. Submachine learning is basically pre-processing of the data and analyzing data.
+
+14:11 - BABU SAB ASSISTANT PROFESSOR
+Okay. Next continue.
+
+14:15 - Tejaswini Ks
+So the third module is capacity and risk analysis. For this, it calculates employee and team capacity and compares workload with capacity and it identifies the overload underutilization and give me the example for team capacity calculation.
+
+14:35 - BABU SAB ASSISTANT PROFESSOR
+If you take 10 members employees, then you calculate not 10, you should take 50.
+
+14:49 - Tejaswini Ks
+So based on the number of people are there in the team so the AI model can be used to calculate the the gain and risk ratio how so the perform based on performance of all the employees and I'm asking tell me the calculation part Capacity calculation, you are saying team capacity calculation, right?
+
+15:23 - BABU SAB ASSISTANT PROFESSOR
+Tell me the a party is doing now. You should learn first. Tell me the capacity. So, journal team capacity calculation.
+
+15:39 - Unidentified Speaker
+Do you know, sir?
+
+15:42 - Soujanya jain
+There will be a certain project which needs. Some employees, which might be 10 or 20, as you told, to divide the work among all the employees. We'll classify based on their skills, their experience. The calculation part, the mathematics, which is used is very simple. Based on their experience, if the person has three years of experience and the task needs three years of experience, that particular employee will be allocated to that task.
+
+ If the employee has less than three years of experience, then he'll not be allocated to that task. We do not use machine learning for the team capacity calculation. We just use machine learning is a subset of artificial intelligence, sir, where there are three types of machine learning: supervised, unsupervised, and reinforcement learning. We'll basically train a model to predict something using labeled data or unlabeled data or the agent learns from the environment which is reinforcement learning.
+
+
+
+16:49 - BABU SAB ASSISTANT PROFESSOR
+Okay. Tejaswini, when you go to next slide.
+
+16:55 - Tejaswini Ks
+So this these are the tools and technologies we'll be uh using in this project sir. So Python is our main uh main and primary program.
+
+17:04 - BABU SAB ASSISTANT PROFESSOR
+Okay, next, next, next slide.
+
+17:18 - Vinay Laptop
+And now coming to this expected outcomes by the first we aim to complete the data processing and exploring the data analysis and identify the important features. And next we will develop the evaluate and initial AI-based workflow forecasting.
+
+17:38 - BABU SAB ASSISTANT PROFESSOR
+and we will also explain forecasting models and forecasting models. Sir, can you repeat explain the forecasting model forecasting models forecasting models how to develop how to evaluate how to evaluate why you are using initial AI workload AI workload.
+
+18:08 - Vinay Laptop
+Because it is used, our main work is in our project is to manage the load cells. So tell me, like we will evaluate in the machine learning algorithms. So, like selecting it is used for a better prediction. To analyze it. So it is mainly using a better prediction where it is has to be not unfair. In the if you use a multiple people of group, we will assigning any projects, then it will predict how much hours it will go in like, Next, we will develop after this, this we will comparing the predicted workload with the workforce capacity.
+
+ We will identify the potential workload risks, which are risk we can occur in this providing the overflows. Then, we additionally plan to generate an initial resource planning recommendations and develop. Basic interactive dashboards. And finally, we will integrate all the major components into the work prototype demonstration. And our expected outcome prototype that combines AI basic workflow the capacity analysis to the support of the driven workforce planning for this phase.
+
+ And next slide. Here, for project timeline, we have planned our 12 weeks of work. During the first two weeks, we will focus on the problem identification, requirement analysis, and literature service. And next, we will work on the system design and architecture and data presentation preparations. And it is a middle phase. We will perform the data reprocessing and exploration of the data analysis and feature engineering.
+
+ After that, we will focus on the AML and model selection, developer training, and evaluating those models. And after that, we will focus on the AI and machine learning models for our project, which is required and integrate the dashboard development testing and documentation. And this is our all total. We will take this reference from the coming research paper, such as the forecasting literature-related.
+
+ Workload forecasting and resources workflow forecasting and resources allocation. These studies help us to understand the existing method and forecasting approaches and the challenges associated with the work planning. We also referred the forecasting book by the human hindman and some extra. Books to understand the forecasting techniques and evaluation methods. These references to provide the foundation for our proposed systems and help to identify the research gaps and project aims to address.
+
+ To conclude, this project aims to be on the simple workflow prediction, we will combine the workload forecasting with the workplace capacity analysis, risk detections, and resource planning. And support better outflows and decisions. With this, we can conclude this presentation. Thank you for your attention.
+
+22:18 - BABU SAB ASSISTANT PROFESSOR
+Next slide. Next slide.
+
+22:21 - Soujanya jain
+Done, sir. This is the last slide.
+
+22:24 - BABU SAB ASSISTANT PROFESSOR
+Last slide.
+
+22:25 - Soujanya jain
+Yes, sir.
+
+22:29 - Unidentified Speaker
+Okay.
+
+22:31 - BABU SAB ASSISTANT PROFESSOR
+Come to first life. Come to first slide. Yellow. Saw totally. So information bake or slides and information extract address and the confusion of Sira. But okay, any problem in the first review allowanity. Continue Marko.
+
+23:34 - Unidentified Speaker
+Yes.
+
+23:35 - BABU SAB ASSISTANT PROFESSOR
+Okay, but in the end, optics budget clean a gasidan and mathido?
+
+23:42 - Unidentified Speaker
+Yes, sir.
+
+23:53 - BABU SAB ASSISTANT PROFESSOR
+Good job, everyone. But in the keep improvements your skills asterisk keep improving your communication skill and confidence. Don't be afraid of making mistakes. Every mistake presentation is learning experience. Don't worry. But you know, they a presentation clear. Confused topic of a cadre.
+
+24:28 - Sujan Neelgund
+Yes, sir. I'll work sir.
+
+24:34 - BABU SAB ASSISTANT PROFESSOR
+Okay, sir.
+
+25:00 - Soujanya jain
+Yes, sir. Shall we wind up, sir?
+
+25:02 - BABU SAB ASSISTANT PROFESSOR
+Okay. Ah, fine. Okay.
