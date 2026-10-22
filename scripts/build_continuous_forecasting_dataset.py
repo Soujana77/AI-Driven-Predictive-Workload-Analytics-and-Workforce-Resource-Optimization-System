@@ -35,6 +35,33 @@ def main():
         f"Existing rows: {len(workload):,}"
     )
 
+    # ------------------------------------------------------------------
+    # 1. CREATE EMPLOYEE -> TEAM MAPPING
+    # ------------------------------------------------------------------
+
+    print("\nCreating employee team mapping...")
+
+    team_mapping = (
+        workload[
+            [
+                "user_id",
+                "user_team_id"
+            ]
+        ]
+        .drop_duplicates(
+            subset=["user_id"]
+        )
+    )
+
+    print(
+        f"Employees with team information: "
+        f"{len(team_mapping):,}"
+    )
+
+    # ------------------------------------------------------------------
+    # 2. FIND EMPLOYEE ACTIVITY PERIODS
+    # ------------------------------------------------------------------
+
     print("\nFinding employee activity periods...")
 
     activity_periods = (
@@ -57,6 +84,10 @@ def main():
         f"Employees found: "
         f"{len(activity_periods):,}"
     )
+
+    # ------------------------------------------------------------------
+    # 3. CREATE COMPLETE WEEKLY TIMELINES
+    # ------------------------------------------------------------------
 
     print("\nCreating complete weekly timelines...")
 
@@ -89,16 +120,51 @@ def main():
         f"{len(complete_timeline):,}"
     )
 
+    # ------------------------------------------------------------------
+    # 4. ADD TEAM INFORMATION TO COMPLETE TIMELINE
+    # ------------------------------------------------------------------
+
+    print("\nAdding employee team information...")
+
+    complete_timeline = complete_timeline.merge(
+        team_mapping,
+        on="user_id",
+        how="left"
+    )
+
+    print(
+        f"Missing team IDs after mapping: "
+        f"{complete_timeline['user_team_id'].isna().sum():,}"
+    )
+
+    # ------------------------------------------------------------------
+    # 5. MERGE RECORDED WORKLOAD
+    # ------------------------------------------------------------------
+
     print("\nMerging recorded workload...")
 
     forecasting = complete_timeline.merge(
-        workload,
+        workload[
+            [
+                "user_id",
+                "week_start",
+                "workload_hours",
+                "active_task_count",
+                "active_project_count",
+                "work_log_count",
+                "extreme_record_count"
+            ]
+        ],
         on=[
             "user_id",
             "week_start"
         ],
         how="left"
     )
+
+    # ------------------------------------------------------------------
+    # 6. FILL MISSING WORKLOAD VALUES
+    # ------------------------------------------------------------------
 
     print("\nFilling missing workload observations...")
 
@@ -111,36 +177,25 @@ def main():
     ]
 
     for column in numeric_columns:
+
         forecasting[column] = (
             forecasting[column]
             .fillna(0)
         )
 
-    print("\nRestoring employee team information...")
-
-    team_mapping = (
-        workload[
-            [
-                "user_id",
-                "user_team_id"
-            ]
-        ]
-        .drop_duplicates(
-            subset=["user_id"]
-        )
-    )
-
-    forecasting = forecasting.merge(
-        team_mapping,
-        on="user_id",
-        how="left"
-    )
+    # ------------------------------------------------------------------
+    # 7. CREATE ACTIVITY INDICATOR
+    # ------------------------------------------------------------------
 
     print("\nCreating activity indicator...")
 
     forecasting["has_recorded_work"] = (
         forecasting["work_log_count"] > 0
     ).astype(int)
+
+    # ------------------------------------------------------------------
+    # 8. SORT DATASET
+    # ------------------------------------------------------------------
 
     print("\nSorting dataset...")
 
@@ -150,6 +205,10 @@ def main():
             "week_start"
         ]
     )
+
+    # ------------------------------------------------------------------
+    # 9. SELECT FINAL COLUMNS
+    # ------------------------------------------------------------------
 
     forecasting = forecasting[
         [
@@ -165,12 +224,20 @@ def main():
         ]
     ]
 
+    # ------------------------------------------------------------------
+    # 10. SAVE DATASET
+    # ------------------------------------------------------------------
+
     print("\nSaving forecasting dataset...")
 
     forecasting.to_csv(
         output_file,
         index=False
     )
+
+    # ------------------------------------------------------------------
+    # 11. FINAL SUMMARY
+    # ------------------------------------------------------------------
 
     print("\n" + "=" * 80)
     print("CONTINUOUS FORECASTING DATASET CREATED")
@@ -206,7 +273,8 @@ def main():
     print(
         forecasting[
             "has_recorded_work"
-        ].value_counts()
+        ]
+        .value_counts()
         .sort_index()
     )
 
