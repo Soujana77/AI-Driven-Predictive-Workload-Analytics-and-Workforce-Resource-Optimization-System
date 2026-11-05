@@ -1,22 +1,25 @@
+
 import os
+import io
+import csv
 import pandas as pd
+import psycopg2
 
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
 
 
-# --------------------------------------------------
-# 1. Find project root
-# --------------------------------------------------
+# ============================================================
+# 1. PROJECT ROOT
+# ============================================================
 
 PROJECT_ROOT = os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))
 )
 
 
-# --------------------------------------------------
-# 2. Load database configuration
-# --------------------------------------------------
+# ============================================================
+# 2. DATABASE CONFIGURATION
+# ============================================================
 
 load_dotenv(
     os.path.join(PROJECT_ROOT, "backend", ".env")
@@ -25,14 +28,12 @@ load_dotenv(
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
-    raise ValueError(
-        "DATABASE_URL not found in backend/.env"
-    )
+    raise ValueError("DATABASE_URL not found in backend/.env")
 
 
-# --------------------------------------------------
-# 3. Load tasks dataset
-# --------------------------------------------------
+# ============================================================
+# 3. DATASET PATH
+# ============================================================
 
 TASKS_FILE = os.path.join(
     PROJECT_ROOT,
@@ -41,6 +42,11 @@ TASKS_FILE = os.path.join(
     "tasks.csv"
 )
 
+
+# ============================================================
+# 4. LOAD DATASET
+# ============================================================
+
 print("Loading tasks dataset...")
 
 tasks = pd.read_csv(TASKS_FILE)
@@ -48,9 +54,9 @@ tasks = pd.read_csv(TASKS_FILE)
 print(f"Tasks loaded: {len(tasks):,}")
 
 
-# --------------------------------------------------
-# 4. Select required columns
-# --------------------------------------------------
+# ============================================================
+# 5. SELECT REQUIRED COLUMNS
+# ============================================================
 
 tasks = tasks[
     [
@@ -63,9 +69,11 @@ tasks = tasks[
 ].copy()
 
 
-# --------------------------------------------------
-# 5. Convert timestamp
-# --------------------------------------------------
+# ============================================================
+# 6. CONVERT TIMESTAMP
+# ============================================================
+
+print("\nConverting timestamps...")
 
 tasks["created_at"] = pd.to_datetime(
     tasks["created_at"],
@@ -74,26 +82,44 @@ tasks["created_at"] = pd.to_datetime(
 )
 
 
-# --------------------------------------------------
-# 6. Convert boolean field
-# --------------------------------------------------
+# ============================================================
+# 7. CORRECT BOOLEAN CONVERSION
+# ============================================================
+
+print("\nConverting Boolean values...")
+
+boolean_mapping = {
+    "t": True,
+    "f": False,
+    "true": True,
+    "false": False,
+    "1": True,
+    "0": False
+}
 
 tasks["is_container"] = (
     tasks["is_container"]
     .astype(str)
+    .str.strip()
     .str.lower()
-    .map({
-        "true": True,
-        "false": False,
-        "1": True,
-        "0": False
-    })
+    .map(boolean_mapping)
 )
 
+invalid_booleans = tasks["is_container"].isna().sum()
 
-# --------------------------------------------------
-# 7. Prepare nullable parent IDs
-# --------------------------------------------------
+if invalid_booleans > 0:
+    raise ValueError(
+        f"Found {invalid_booleans} invalid Boolean values."
+    )
+
+print("Boolean conversion successful!")
+
+print(tasks["is_container"].value_counts())
+
+
+# ============================================================
+# 8. HANDLE NULL PARENT IDS
+# ============================================================
 
 tasks["parent_id"] = tasks["parent_id"].where(
     tasks["parent_id"].notna(),
@@ -101,36 +127,82 @@ tasks["parent_id"] = tasks["parent_id"].where(
 )
 
 
-# --------------------------------------------------
-# 8. Display prepared data
-# --------------------------------------------------
+# ============================================================
+# 9. PREPARE CSV DATA FOR POSTGRESQL COPY
+# ============================================================
 
-print("\nPrepared task records:")
-print(tasks.head())
+print("\nPreparing task records...")
+
+tasks["created_at"] = (
+    tasks["created_at"]
+    .dt.strftime("%Y-%m-%d %H:%M:%S.%f%z")
+)
+
+buffer = io.StringIO()
+
+writer = csv.writer(
+    buffer,
+    lineterminator="\n"
+)
+
+for row in tasks.itertuples(index=False, name=None):
+    writer.writerow(row)
+
+buffer.seek(0)
 
 
-# --------------------------------------------------
-# 9. Connect to PostgreSQL
-# --------------------------------------------------
+# ============================================================
+# 10. CONNECT TO POSTGRESQL
+# ============================================================
 
 print("\nConnecting to PostgreSQL...")
 
-engine = create_engine(DATABASE_URL)
+connection = psycopg2.connect(DATABASE_URL)
+
+cursor = connection.cursor()
 
 
-# --------------------------------------------------
-# 10. Insert tasks
-# --------------------------------------------------
+# ============================================================
+# 11. BULK IMPORT USING COPY
+# ============================================================
 
-with engine.begin() as connection:
+print("\nImporting tasks using PostgreSQL COPY...")
 
-    tasks.to_sql(
-        "tasks",
-        connection,
-        if_exists="append",
-        index=False
+try:
+
+    cursor.copy_expert(
+        """
+        COPY tasks (
+            id,
+            created_at,
+            is_container,
+            parent_id,
+            project_id
+        )
+        FROM STDIN
+        WITH (
+            FORMAT CSV,
+            NULL ''
+        )
+        """,
+        buffer
     )
 
+    connection.commit()
 
-print("\nTasks imported successfully!")
-print(f"Records inserted: {len(tasks):,}")
+    print("\nTasks imported successfully!")
+    print(f"Records inserted: {len(tasks):,}")
+
+except Exception as error:
+
+    connection.rollback()
+
+    print("\nTask import failed!")
+    print(error)
+
+    raise
+
+finally:
+
+    cursor.close()
+    connection.close()
