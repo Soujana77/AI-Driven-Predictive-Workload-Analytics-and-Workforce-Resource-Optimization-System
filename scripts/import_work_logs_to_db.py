@@ -61,8 +61,7 @@ declarations = pd.read_csv(
 )
 
 print(
-    f"Declarations loaded: "
-    f"{len(declarations):,}"
+    f"Declarations loaded: {len(declarations):,}"
 )
 
 
@@ -107,40 +106,38 @@ declarations["date"] = pd.to_datetime(
 
 invalid_dates = declarations["date"].isna().sum()
 
-print(
-    f"Invalid dates found: "
-    f"{invalid_dates:,}"
-)
+print(f"Invalid dates found: {invalid_dates:,}")
 
 declarations = declarations.dropna(
     subset=["date"]
 ).copy()
 
 print(
-    f"Records remaining: "
-    f"{len(declarations):,}"
+    f"Valid records remaining: {len(declarations):,}"
 )
 
 
 # ============================================================
-# PREPARE VALUES FOR POSTGRESQL COPY
+# PREPARE VALUES FOR POSTGRESQL
 # ============================================================
 
 print("\nPreparing database import...")
+
+if declarations["created_at"].isna().any():
+    raise ValueError("Invalid created_at values found.")
+
+if declarations["duration"].isna().any():
+    raise ValueError("Missing duration values found.")
 
 declarations["created_at"] = (
     declarations["created_at"]
     .dt.strftime("%Y-%m-%d %H:%M:%S.%f%z")
 )
 
-declarations["date"] = (
-    declarations["date"]
-    .astype(str)
-)
+declarations["date"] = declarations["date"].astype(str)
 
 declarations["duration"] = (
-    declarations["duration"]
-    .astype("int64")
+    declarations["duration"].astype("int64")
 )
 
 
@@ -150,39 +147,54 @@ declarations["duration"] = (
 
 print("\nConnecting to PostgreSQL...")
 
-connection = psycopg2.connect(
-    DATABASE_URL
-)
-
+connection = psycopg2.connect(DATABASE_URL)
 cursor = connection.cursor()
 
 
 # ============================================================
-# IMPORT USING POSTGRESQL COPY
+# CREATE TEMPORARY STAGING TABLE
 # ============================================================
 
-print("\nImporting work logs using PostgreSQL COPY...")
+print("\nCreating temporary staging table...")
+
+cursor.execute(
+    """
+    CREATE TEMP TABLE work_logs_staging
+    (
+        LIKE work_logs INCLUDING DEFAULTS
+    )
+    ON COMMIT PRESERVE ROWS;
+    """
+)
+
+connection.commit()
+
+
+# ============================================================
+# IMPORT CONFIGURATION
+# ============================================================
 
 chunk_size = 50_000
-
 total_rows = len(declarations)
+
+total_inserted = 0
+total_skipped = 0
+processed_rows = 0
+
+
+# ============================================================
+# RESUME-SAFE BULK IMPORT
+# ============================================================
+
+print("\nStarting resume-safe work-log import...")
 
 try:
 
-    for start in range(
-        0,
-        total_rows,
-        chunk_size
-    ):
+    for start in range(0, total_rows, chunk_size):
 
-        end = min(
-            start + chunk_size,
-            total_rows
-        )
+        end = min(start + chunk_size, total_rows)
 
-        chunk = declarations.iloc[
-            start:end
-        ]
+        chunk = declarations.iloc[start:end]
 
         buffer = io.StringIO()
 
@@ -199,9 +211,15 @@ try:
 
         buffer.seek(0)
 
+        # Clear staging table before loading next batch.
+        cursor.execute(
+            "TRUNCATE TABLE work_logs_staging;"
+        )
+
+        # Load batch into temporary staging table.
         cursor.copy_expert(
             """
-            COPY work_logs
+            COPY work_logs_staging
             (
                 id,
                 created_at,
@@ -212,46 +230,76 @@ try:
                 task_id
             )
             FROM STDIN
-            WITH (
-                FORMAT CSV
-            )
+            WITH (FORMAT CSV);
             """,
             buffer
         )
 
-        connection.commit()
-
-        print(
-            f"Imported "
-            f"{end:,} / "
-            f"{total_rows:,}"
+        # Insert only IDs that do not already exist.
+        cursor.execute(
+            """
+            INSERT INTO work_logs
+            (
+                id,
+                created_at,
+                date,
+                duration,
+                source,
+                user_id,
+                task_id
+            )
+            SELECT
+                id,
+                created_at,
+                date,
+                duration,
+                source,
+                user_id,
+                task_id
+            FROM work_logs_staging
+            ON CONFLICT (id) DO NOTHING;
+            """
         )
 
+        inserted = cursor.rowcount
+        skipped = len(chunk) - inserted
 
-    print(
-        "\nWork logs imported successfully!"
-    )
+        # Commit this batch.
+        connection.commit()
 
-    print(
-        f"Records inserted: "
-        f"{total_rows:,}"
-    )
+        total_inserted += inserted
+        total_skipped += skipped
+        processed_rows += len(chunk)
 
+        print(
+            f"Processed {processed_rows:,} / {total_rows:,} | "
+            f"New: {total_inserted:,} | "
+            f"Skipped: {total_skipped:,}"
+        )
+
+    print("\nWork-log import completed!")
+
+    print(f"Total processed: {processed_rows:,}")
+    print(f"New records inserted: {total_inserted:,}")
+    print(f"Existing records skipped: {total_skipped:,}")
 
 except Exception as error:
 
     connection.rollback()
 
-    print(
-        "\nERROR: Work log import failed."
-    )
-
+    print("\nERROR: Work-log import failed.")
     print(error)
 
     raise
-
 
 finally:
 
     cursor.close()
     connection.close()
+
+
+# ============================================================
+# FINAL MESSAGE
+# ============================================================
+
+print("\nDatabase connection closed.")
