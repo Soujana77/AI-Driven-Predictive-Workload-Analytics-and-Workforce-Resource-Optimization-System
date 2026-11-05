@@ -1,0 +1,16 @@
+{
+    "total_records": 4446646,
+    "negative_records": 27,
+    "zero_records": 6070,
+    "above_24_hours": 10075.0,
+    "above_100_hours": 134.0,
+    "above_1000_hours": 1.0,
+    "minimum_hours": -32.0,
+    "maximum_hours": 2002.0,
+    "average_hours": 3.7661790074786454,
+    "p25_hours": 1.0,
+    "median_hours": 2.5,
+    "p75_hours": 7.0,
+    "earliest_date": "2013-07-08",
+    "latest_date": "2030-01-01"
+}
