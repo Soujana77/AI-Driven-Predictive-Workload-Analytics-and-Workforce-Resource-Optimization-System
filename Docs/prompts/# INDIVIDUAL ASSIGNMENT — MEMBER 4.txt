@@ -1,0 +1,547 @@
+# INDIVIDUAL ASSIGNMENT — MEMBER 4
+# MANAGER DASHBOARD — FRONTEND DEVELOPMENT
+
+You are Member 4 of the project:
+
+**Agentic AI-Driven Workforce Capacity Forecasting and Resource Optimization System**
+
+Your responsibility is to develop the complete Manager Dashboard frontend using React, TypeScript, Vite and Tailwind CSS.
+
+You own the manager-facing user interface. You do not own the central backend, forecasting model, optimization engine or Employee Dashboard.
+
+## 1. Your objective
+
+Build a complete, professional manager workspace through which a software-company manager can:
+
+- View workforce information.
+- Manage employees and teams.
+- Manage projects and tasks.
+- Understand historical workload.
+- View future workload forecasts.
+- Compare workload with capacity.
+- Review resource optimization recommendations.
+- Monitor workforce risks.
+- Interact with the AI assistant.
+- Approve or reject proposed actions.
+- Generate workforce reports.
+- Configure planning preferences.
+
+This must be a working frontend connected to documented APIs, not merely a static design.
+
+## 2. Mandatory design system
+
+This design is fixed and must not be changed.
+
+### Main page background
+
+Use a Champagne-to-Vanilla gradient across the entire Manager Dashboard:
+
+- Champagne: `#F8E7C9`
+- Vanilla: `#FFF4D6`
+
+The background must remain a gradient, not a flat color.
+
+Use the gradient on the overall application background and maintain its appearance while navigating between manager pages.
+
+### Other colors
+
+- Emerald Ink: `#064E3B` — sidebar, branding and primary navigation.
+- Burnt Orange: `#FC6C26` — primary actions, active navigation, highlights and accents.
+- Vanilla and warm cream — cards and content surfaces.
+- Dark charcoal/deep green — text.
+
+### Visual style
+
+- Modern enterprise SaaS dashboard.
+- Professional and clean.
+- Consistent typography.
+- Rounded cards with subtle shadows.
+- Clear charts and data tables.
+- Consistent buttons, forms, filters and spacing.
+- Responsive layouts.
+- Accessible contrast.
+
+Do not introduce a competing theme or plain white/grey page background.
+
+## 3. Global application layout
+
+Create a shared Manager Dashboard shell.
+
+**Left sidebar**
+
+- WorkForce AI / project brand area.
+- All 14 manager navigation links.
+- Active page indication.
+- Logged-in manager profile and role.
+- Appropriate icons.
+
+**Top bar**
+
+- Current page title.
+- Relevant date/week selector.
+- Notifications.
+- Manager profile menu.
+
+**Main content**
+
+- Page-specific content.
+- Consistent page heading.
+- Relevant filters and actions.
+- Loading, empty, success and error states.
+
+**AI Assistant**
+
+Provide persistent access to the manager's AI Assistant page or panel. It should be available throughout the manager experience without blocking the content.
+
+## 4. Build all 14 agreed pages
+
+Do not omit or rename these pages.
+
+### Page 1: Overview
+
+Display:
+- Total employees.
+- Active projects.
+- Open tasks.
+- Overloaded employees.
+- Underutilized employees.
+- Actual versus predicted workload trend.
+- Team capacity overview.
+- Workload distribution.
+- Upcoming workload and deadline risks.
+- Upcoming deadlines.
+- AI recommendation preview.
+
+Actions:
+- Change reporting period.
+- Open detailed analytics.
+- Inspect a risk.
+- Open an AI recommendation.
+
+This is a summary page, not a duplicate of every other page.
+
+### Page 2: Employees
+
+Employee directory with:
+- Name and employee ID.
+- Profile image or initials.
+- Team.
+- Role.
+- Skills.
+- Experience.
+- Current projects.
+- Workload.
+- Availability/status.
+
+Actions:
+- Add employee.
+- View profile.
+- Edit employee.
+- Assign team.
+- View workload.
+- View skills.
+- View assigned tasks and projects.
+- Update availability.
+
+Employee detail view:
+- Profile and professional information.
+- Skills and experience.
+- Team.
+- Assigned projects and tasks.
+- Historical workload.
+- Forecast workload.
+- Available capacity.
+- Workload status.
+
+### Page 3: Teams & Departments
+
+Display:
+- Team name.
+- Department.
+- Team lead, where recorded.
+- Number of employees.
+- Active projects.
+- Open tasks.
+- Current workload.
+- Capacity utilization.
+
+Team detail view:
+- Team members.
+- Member skills.
+- Projects.
+- Tasks.
+- Historical and predicted workload.
+- Team capacity.
+- Overloaded and underutilized members.
+
+Actions:
+- Create team.
+- Edit team.
+- Add or remove members.
+- View team details.
+
+### Page 4: Projects
+
+Project directory:
+- Project name and ID.
+- Description.
+- Assigned team.
+- Project manager.
+- Start date.
+- End date/deadline.
+- Task count.
+- Status.
+- Progress.
+- Workload consumed.
+
+Project details:
+- Project team.
+- Assigned employees.
+- Task list.
+- Completed and pending tasks.
+- Timeline.
+- Deadline.
+- Historical workload.
+- Predicted workload.
+- Workload risks.
+
+Actions:
+- Create project.
+- Edit project.
+- Assign team.
+- Add/view tasks.
+- Update project status.
+
+### Page 5: Tasks
+
+Task list:
+- Task title and ID.
+- Project.
+- Assigned employee.
+- Team.
+- Priority.
+- Estimated effort.
+- Actual effort, when available.
+- Start date.
+- Due date.
+- Status.
+
+Statuses:
+- To Do.
+- In Progress.
+- Completed.
+- Blocked.
+
+Task detail:
+- Description.
+- Project.
+- Assigned employee.
+- Priority.
+- Estimated effort.
+- Due date.
+- Status.
+- Work history.
+- Relevant workload information.
+
+Actions:
+- Create task.
+- Edit task.
+- Assign/reassign employee.
+- Change priority.
+- Change deadline.
+- Update status.
+- View history.
+
+### Page 6: Workload Analytics
+
+Display:
+- Overall historical workload.
+- Employee workload comparisons.
+- Team workload comparisons.
+- Project workload.
+- Workload distribution.
+- Weekly and monthly trends.
+- Data-quality indicators.
+
+Filters:
+- Date range.
+- Employee.
+- Team.
+- Project.
+
+Clearly distinguish historical/current workload from future predictions.
+
+### Page 7: Workload Forecast
+
+Display:
+- Overall forecast.
+- Employee-level forecasts.
+- Team-level forecasts.
+- Weekly predicted workload.
+- Actual versus predicted workload.
+- Forecast horizon selector.
+- Model performance indicators.
+- Confidence or uncertainty information, only when supported.
+
+Filters:
+- Employee.
+- Team.
+- Project.
+- Forecast period.
+
+Actions:
+- Generate/refresh forecast.
+- View employee forecast.
+- View team forecast.
+- Compare with historical workload.
+- Open Capacity Planning.
+
+Do not fabricate forecast values. Display a proper empty or unavailable state until the ML service is connected.
+
+### Page 8: Capacity Planning
+
+Display:
+- Employee working capacity.
+- Available capacity.
+- Predicted workload.
+- Capacity utilization.
+- Overloaded employees.
+- Underutilized employees.
+- Team capacity.
+- Weekly capacity comparison.
+
+Views:
+- Company capacity.
+- Team capacity.
+- Employee capacity.
+- Weekly capacity grid/calendar.
+
+Actions:
+- Select future week.
+- Inspect employee capacity.
+- Compare workload and capacity.
+- Identify shortages.
+- Open Resource Optimization.
+
+### Page 9: Resource Optimization
+
+Display recommendations containing:
+- Task.
+- Recommended employee.
+- Skill match.
+- Available capacity.
+- Expected workload after assignment.
+- Reason.
+- Potential workload improvement.
+- Alternative candidates, if available.
+
+Actions:
+- Generate recommendations.
+- Compare candidates.
+- View recommendation explanation.
+- Accept/send for approval.
+- Reject recommendation.
+
+The frontend must not independently modify assignments. Consequential changes go through the backend approval workflow.
+
+### Page 10: Risk Management
+
+Display risks for:
+- Employee overload.
+- Team overload.
+- Project workload.
+- Task deadlines.
+- Capacity shortage.
+- Workload imbalance.
+
+Each risk should display:
+- Risk title.
+- Related entity.
+- Severity: High, Medium or Low.
+- Reason.
+- Detection date/forecast period.
+- Suggested next action.
+- Status.
+
+Actions:
+- View risk details.
+- Open related employee, team, project or task.
+- View supporting data.
+- Ask AI to analyze it.
+- Track resolution.
+
+### Page 11: AI Assistant
+
+Build a manager-facing conversational AI interface.
+
+Support questions such as:
+- Which employees may be overloaded next week?
+- Which team has the most available capacity?
+- Who has the skills for this task?
+- Why is this project at risk?
+- Suggest how to redistribute tasks.
+- Compare actual and predicted workload.
+
+Display:
+- Conversation messages.
+- Clear responses.
+- Relevant numbers and tables.
+- Recommendation summaries.
+- Approval actions where supplied by the backend.
+- Loading and error states.
+
+Do not implement fake AI reasoning in the frontend. Connect to Member 1's API.
+
+### Page 12: Approvals
+
+Display:
+- Proposed action.
+- Related task.
+- Current employee.
+- Proposed employee.
+- Reason.
+- Expected impact.
+- Requested date.
+- Status.
+
+Statuses:
+- Pending.
+- Approved.
+- Rejected.
+
+Actions:
+- View details.
+- Approve.
+- Reject.
+
+Approval must call the authorized backend endpoint and display the actual response.
+
+### Page 13: Reports
+
+Report types:
+1. Employee Workload Report.
+2. Team Workload Report.
+3. Project Workload Report.
+4. Workload Forecast Report.
+5. Capacity Utilization Report.
+6. Resource Optimization Report.
+7. Risk Summary Report.
+
+Features:
+- Select report.
+- Date range.
+- Relevant filters.
+- Preview.
+- Export supported formats such as PDF or CSV.
+
+### Page 14: Settings
+
+Sections:
+- Manager profile.
+- Workforce planning rules.
+- Standard working hours and capacity assumptions.
+- Risk thresholds.
+- Notification preferences.
+- Date, time and display preferences.
+
+Do not introduce unrelated configuration modules.
+
+## 5. Technical implementation requirements
+
+Use:
+- React.
+- TypeScript.
+- Vite.
+- Tailwind CSS.
+- Recharts.
+
+Organize the application into reusable components.
+
+Suggested structure:
+
+`frontend/manager/`
+- `src/components/`
+- `src/layouts/`
+- `src/pages/`
+- `src/features/employees/`
+- `src/features/teams/`
+- `src/features/projects/`
+- `src/features/tasks/`
+- `src/features/analytics/`
+- `src/features/forecast/`
+- `src/features/capacity/`
+- `src/features/optimization/`
+- `src/features/risks/`
+- `src/features/assistant/`
+- `src/features/approvals/`
+- `src/features/reports/`
+- `src/features/settings/`
+- `src/services/`
+- `src/types/`
+- `src/hooks/`
+- `src/utils/`
+
+Confirm the exact shared repository structure with Member 1 before creating or moving files.
+
+## 6. API integration
+
+Member 1 owns backend APIs.
+
+You must:
+- Obtain documented API contracts.
+- Define TypeScript types matching API schemas.
+- Use a centralized API client.
+- Keep API calls outside presentation components where practical.
+- Handle loading, errors, empty results and unauthorized responses.
+- Use environment-based backend URLs.
+- Avoid hardcoded API credentials.
+- Use mock data only for temporary development when explicitly identified as mock data.
+
+Coordinate with Member 5 so both dashboards share the same design tokens and compatible components without modifying each other's pages.
+
+## 7. Folder ownership
+
+Your primary ownership:
+
+`frontend/manager/**`
+
+Shared design-system changes must be discussed with Member 5 and Member 1.
+
+Do not modify:
+- `backend/**`
+- `ml/**`
+- `optimization/**`
+- `frontend/employee/**`
+
+Do not change shared API contracts without approval.
+
+## 8. Required deliverables
+
+1. Manager application layout and navigation.
+2. All 14 pages.
+3. Employee, team, project and task management interfaces.
+4. Analytics and forecast visualizations.
+5. Capacity and optimization interfaces.
+6. Risk management interface.
+7. AI Assistant interface.
+8. Approval workflow interface.
+9. Reports and settings.
+10. API integration.
+11. Responsive layouts.
+12. Reusable components.
+13. Frontend tests.
+14. Instructions to run the application.
+
+## 9. First task
+
+Inspect the repository and common project instructions.
+
+Return:
+1. Your understanding of the Manager Dashboard.
+2. Your proposed page/component architecture.
+3. Proposed routes for all 14 pages.
+4. Shared design tokens and component plan.
+5. API dependencies.
+6. Your first implementation task.
+
+Do not begin by building only the Overview and treating the rest as optional. All 14 pages are in the agreed scope. Build in stages, with each stage runnable and testable.

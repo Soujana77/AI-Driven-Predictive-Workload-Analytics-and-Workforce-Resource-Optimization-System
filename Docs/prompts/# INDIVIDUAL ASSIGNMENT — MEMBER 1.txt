@@ -1,0 +1,347 @@
+# INDIVIDUAL ASSIGNMENT — MEMBER 1
+# BACKEND + DATABASE + DATA ENGINEERING + AGENTIC AI
+
+You are Member 1 and the technical integration lead for the project:
+
+**Agentic AI-Driven Workforce Capacity Forecasting and Resource Optimization System**
+
+You are responsible for the central backend, application database, API contracts, data integration and Agentic AI layer.
+
+You must coordinate the interfaces used by the other four members.
+
+## 1. Your ownership
+
+Your responsibilities:
+
+1. Existing PostgreSQL database and historical data integration.
+2. Application database schema and migrations.
+3. Flask backend and REST APIs.
+4. Authentication and role-based authorization.
+5. Employee, team, project and task management APIs.
+6. Workload data access and integration.
+7. Agentic AI assistant.
+8. AI tool integration with forecasting, capacity, optimization and risk modules.
+9. Manager approval and controlled action-execution workflow.
+10. Backend integration and end-to-end testing.
+
+Do not take over the other members' internal implementations. Define contracts and integrate their outputs.
+
+## 2. Existing database — preserve it
+
+The database is `workforce_ai`.
+
+Existing tables:
+- employees
+- teams
+- projects
+- tasks
+- work_logs
+
+The existing historical dataset foundation is complete enough to build upon. Inspect the actual schema before making changes.
+
+Do not drop, recreate or overwrite these tables simply to make development easier.
+
+Historical workload is available through:
+
+`data/processed/weekly_employee_workload.csv`
+
+Do not commit the large CSV files or raw dataset.
+
+## 3. Application database design
+
+Inspect the existing database first. Then design and implement only the additional application structures needed.
+
+Consider the following entities and relationships:
+
+- User accounts and roles
+- Employee profiles
+- Employee skills and skill proficiency
+- Employee availability and working schedules
+- Teams and team membership
+- Projects and project membership
+- Tasks and task assignments
+- Task status history
+- Task effort estimates and actual effort
+- Manager approvals
+- Notifications
+- AI recommendation records
+- AI action audit history
+
+Important:
+- Reuse existing employee, team, project and task records where appropriate.
+- Do not create duplicate master records.
+- Keep historical work logs distinct from application task updates.
+- Define foreign keys and indexes appropriately.
+- Use database migrations rather than destructive schema changes.
+- Define how application employees map to existing historical employee IDs.
+- Make any synthetic or manually entered fields explicit; do not present invented historical skills or availability as facts.
+
+## 4. Flask backend
+
+Create a modular Flask backend using SQLAlchemy.
+
+Responsibilities:
+- Configuration and environment management.
+- Database connection.
+- Models and migrations.
+- Authentication and authorization.
+- Request validation.
+- Error handling.
+- REST endpoints.
+- Service layer.
+- Integration adapters for ML and optimization modules.
+- Tests.
+
+Propose a clean structure such as:
+
+`backend/`
+- `app/`
+  - `models/`
+  - `routes/`
+  - `services/`
+  - `schemas/`
+  - `auth/`
+  - `integrations/`
+  - `agent/`
+  - `utils/`
+- `migrations/`
+- `tests/`
+- `config.py`
+- `run.py`
+
+Inspect the repository before deciding exact paths. Preserve existing files and coordinate any structural changes.
+
+## 5. API responsibilities
+
+Design and document REST APIs for:
+
+**Authentication**
+- Login
+- Logout
+- Current user
+- Role verification
+
+**Employees**
+- List employees
+- Employee details
+- Create and update employee
+- Employee skills
+- Employee availability
+- Employee workload summary
+
+**Teams**
+- List and view teams
+- Create and update teams
+- Team membership
+
+**Projects**
+- List projects
+- Project details
+- Create and update projects
+- Project members
+
+**Tasks**
+- List tasks
+- Create and update tasks
+- Assign and reassign tasks
+- Update task status
+- Task history
+
+**Workforce intelligence**
+- Historical workload
+- Analytics summaries
+- Forecast retrieval
+- Capacity retrieval
+- Optimization recommendations
+- Risk retrieval
+
+**AI and approvals**
+- Send message to AI assistant
+- Retrieve conversation history where supported
+- Retrieve AI recommendations
+- Submit recommendation for approval
+- Approve or reject an action
+- Retrieve audit history
+
+For every endpoint, document:
+- HTTP method
+- URL
+- Permission required
+- Request schema
+- Response schema
+- Validation rules
+- Error responses
+
+Coordinate the exact contracts with Members 2, 3, 4 and 5 before implementation.
+
+## 6. Agentic AI assistant — your main advanced component
+
+Build an Agentic AI layer that can understand workforce-related questions and use controlled tools to answer them.
+
+Example manager questions:
+- Which employees may be overloaded next week?
+- Which team has available capacity?
+- Which employees have the skills required for a particular task?
+- Why is a project at risk?
+- Suggest a better distribution of tasks.
+- Compare current and predicted workload.
+- Explain why an employee was recommended.
+
+### Required agent workflow
+
+1. Receive a user question.
+2. Identify the user's role and permissions.
+3. Understand the intent.
+4. Decide which tool or tools are required.
+5. Call the authorized backend service or module.
+6. Validate and interpret returned results.
+7. Produce a grounded explanation.
+8. Offer a recommendation when appropriate.
+9. Request manager approval before consequential changes.
+10. Execute only approved actions.
+11. Record the action and its result in an audit trail.
+
+### Tools the agent should eventually use
+
+- Employee lookup
+- Team lookup
+- Project lookup
+- Task lookup
+- Workload analytics
+- Workload forecast
+- Capacity analysis
+- Risk analysis
+- Resource optimization
+- Approval submission
+- Approved task reassignment
+
+These must be actual controlled functions or API calls, not fabricated tool results.
+
+### Agent safety and permissions
+
+- An employee can ask about their own tasks, workload, deadlines and availability.
+- An employee must not access other employees' private information.
+- A manager can query authorized company workforce information.
+- The agent must not bypass backend authorization.
+- The agent must not execute a task reassignment just because a user asks it to recommend one.
+- Approval must be recorded before a consequential action.
+- Every approved action must be validated again at execution time.
+- Store recommendation, approval, execution status and audit details.
+- Never expose database passwords, secrets or private records in AI responses.
+
+### Conversation examples to support
+
+Manager:
+"Which employees can take on another task next week?"
+
+Agent:
+- Retrieves next week's forecast.
+- Retrieves available capacity.
+- Identifies suitable employees.
+- Explains the selection.
+- Provides recommendations.
+
+Manager:
+"Assign Task 104 to Employee 205."
+
+Agent:
+- Checks permissions and task details.
+- Checks employee skills and capacity.
+- Presents the proposed assignment.
+- Requests approval.
+- Executes only after approval.
+- Confirms the actual result.
+
+Employee:
+"What should I work on today?"
+
+Agent:
+- Retrieves only that employee's assigned tasks and deadlines.
+- Explains priorities based on available task information.
+
+## 7. Integration with other members
+
+Member 2 supplies:
+- Forecasting service
+- Model outputs
+- Forecast metadata and evaluation results
+
+Member 3 supplies:
+- Capacity calculations
+- Risk analysis
+- Resource optimization recommendations
+
+Member 4 consumes:
+- Manager-facing REST APIs
+
+Member 5 consumes:
+- Employee-facing REST APIs
+
+You must publish API contracts and sample response JSON early so frontend members can work without waiting for backend completion.
+
+Use clearly marked mock responses only during initial integration. Replace them with actual services before claiming completion.
+
+## 8. Required deliverables
+
+1. Backend architecture documentation.
+2. Database schema and relationship diagram.
+3. Application database migrations.
+4. Authentication and authorization.
+5. Employee, team, project and task APIs.
+6. Workload and analytics APIs.
+7. ML and optimization integration adapters.
+8. Agentic AI assistant.
+9. Approval and audit workflow.
+10. API documentation.
+11. Backend tests.
+12. Integration documentation.
+13. Instructions to run the backend locally.
+
+## 9. Folder ownership
+
+Proposed ownership:
+
+- `backend/**`
+- `docs/api/**`
+- `docs/database/**`
+- `docs/agentic-ai/**`
+- `backend/app/agent/**`
+
+You may update shared architecture documents with agreement. Do not modify the other members' frontend, ML or optimization implementation folders without coordination.
+
+## 10. Implementation order
+
+Phase 1: Inspect existing repository, database and scripts.
+
+Phase 2: Document architecture, schema and API contracts.
+
+Phase 3: Implement application database structures and migrations.
+
+Phase 4: Implement authentication and core CRUD APIs.
+
+Phase 5: Implement workload and analytics endpoints.
+
+Phase 6: Define ML and optimization adapters and integrate their outputs.
+
+Phase 7: Implement AI tools and the agent workflow.
+
+Phase 8: Implement manager approval and audit mechanisms.
+
+Phase 9: Connect both dashboards.
+
+Phase 10: Run integration tests and document the complete workflow.
+
+Do not attempt to build the entire backend in one untested step.
+
+## 11. First task
+
+Inspect the existing GitHub repository and PostgreSQL schema. Report:
+
+- What is already implemented.
+- What should be preserved.
+- What backend/application components are missing.
+- Your proposed API contracts.
+- Your proposed database changes.
+- Your first small implementation task.
+
+Wait for project lead approval before making structural changes.

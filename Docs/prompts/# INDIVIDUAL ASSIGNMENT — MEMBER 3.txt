@@ -1,0 +1,292 @@
+# INDIVIDUAL ASSIGNMENT — MEMBER 3
+# CAPACITY PLANNING + RISK ANALYSIS + RESOURCE OPTIMIZATION
+
+You are Member 3 of the project:
+
+**Agentic AI-Driven Workforce Capacity Forecasting and Resource Optimization System**
+
+Your responsibility is to build the decision-making logic that determines whether employees have enough capacity and recommends suitable employees for tasks.
+
+You own capacity analysis, workload risk calculations and resource optimization. You do not own the forecasting model, central backend, Agentic AI or dashboards.
+
+## 1. Your objective
+
+Build a system that answers:
+
+- Which employees have available capacity?
+- Which employees are overloaded?
+- Which employees are underutilized?
+- Which teams have insufficient capacity?
+- Which employee is most suitable for a particular task?
+- How can tasks be redistributed to balance workload?
+- What would workload look like after a proposed assignment?
+- Why is a particular allocation recommended?
+
+The result must be explainable and based on defined business rules and actual inputs.
+
+## 2. Inputs from other modules
+
+You will eventually receive:
+
+**From Member 1 — Backend**
+- Employee records
+- Employee skills and proficiency
+- Experience
+- Working availability
+- Team information
+- Task requirements
+- Estimated task effort
+- Priority and deadlines
+
+**From Member 2 — Forecasting**
+- Employee-level predicted workload
+- Team-level predicted workload
+- Forecast period
+- Model metadata
+- Uncertainty information, where supported
+
+Do not assume these interfaces are complete yet. Define expected input schemas with the relevant members and use clearly marked mock fixtures during independent development.
+
+## 3. Capacity planning module
+
+### A. Define capacity correctly
+
+Capacity must represent the amount of work an employee can realistically handle during a given period.
+
+Possible inputs:
+- Standard working hours per week
+- Employee-specific working schedule
+- Availability or planned absence, if recorded
+- Existing assigned workload
+- Agreed utilization rules
+
+Define the calculation transparently.
+
+A basic conceptual calculation is:
+
+Available capacity = Effective working capacity − Existing committed workload
+
+Do not confuse historical recorded hours with future committed work. Document exactly how each input is used.
+
+### B. Capacity metrics
+
+Calculate:
+- Total working capacity
+- Predicted workload
+- Available capacity
+- Capacity utilization percentage
+- Capacity shortage
+- Overload amount
+- Underutilization
+
+A possible utilization calculation:
+
+Capacity utilization = Predicted workload / Effective working capacity × 100
+
+Define appropriate handling for zero or missing capacity.
+
+### C. Capacity classifications
+
+Create configurable, documented rules for:
+- Normal
+- High utilization
+- Overloaded
+- Underutilized
+
+Do not hardcode arbitrary thresholds without documenting the business assumptions. Allow thresholds to be configured through the appropriate backend settings.
+
+### D. Views supported by your module
+
+Provide calculations for:
+- Company-level capacity
+- Team-level capacity
+- Employee-level capacity
+- Weekly capacity comparisons
+
+## 4. Risk analysis
+
+Identify and explain risks such as:
+
+- Employee overload
+- Team overload
+- Capacity shortage
+- Workload imbalance
+- Task deadline risk
+- Project workload risk
+
+Each risk should include:
+- Risk identifier
+- Risk type
+- Related employee, team, task or project
+- Forecast or planning period
+- Severity
+- Supporting measurements
+- Explanation
+- Suggested action
+
+Risk classifications must be based on explicit rules or validated model results. Do not generate unsupported risk labels.
+
+## 5. Resource optimization module
+
+### A. Objective
+
+Recommend appropriate employees for tasks while considering multiple constraints.
+
+Inputs may include:
+- Task skill requirements
+- Employee skills
+- Skill proficiency
+- Employee experience
+- Current workload
+- Predicted workload
+- Available capacity
+- Task estimated effort
+- Task priority
+- Task deadline
+- Team or project constraints
+
+### B. Candidate ranking
+
+Develop an explainable scoring or optimization method that considers:
+
+1. Skill match.
+2. Available capacity.
+3. Workload balance.
+4. Experience suitability.
+5. Deadline and priority constraints.
+6. Any applicable team or project restrictions.
+
+Define the scoring logic and weights transparently.
+
+Do not allow skill match alone to select an employee who has no available capacity.
+
+Do not automatically assume every employee is qualified for every task.
+
+### C. Optimization output
+
+For each task, provide:
+- Task ID
+- Recommended employee ID
+- Skill match score
+- Available capacity
+- Predicted workload after assignment
+- Expected utilization after assignment
+- Reason for recommendation
+- Alternative candidates, where available
+- Warnings or constraints
+
+Provide a comparison between the current allocation and proposed allocation.
+
+### D. Optimization objective
+
+Aim to:
+- Reduce overload.
+- Use available workforce capacity.
+- Improve workload balance.
+- Respect required skills.
+- Respect deadlines and constraints.
+- Avoid unnecessary task reassignment.
+
+If no suitable candidate exists, explicitly return that no feasible recommendation was found. Do not force an allocation.
+
+### E. Manager control
+
+Your module only produces recommendations.
+
+It must not independently update the task assignment in the database.
+
+Member 1 implements the approval and execution workflow. The manager must approve consequential changes before they are applied.
+
+## 6. Expected service interfaces
+
+Coordinate these contracts with Member 1.
+
+Suggested operations:
+
+- `calculate_employee_capacity(...)`
+- `calculate_team_capacity(...)`
+- `analyze_workload_risks(...)`
+- `recommend_task_assignments(...)`
+- `evaluate_proposed_allocation(...)`
+
+Use structured inputs and outputs.
+
+Example recommendation structure:
+
+{
+  "task_id": "T104",
+  "recommended_employee_id": "E205",
+  "skill_match_score": 0.92,
+  "available_capacity_hours": 12,
+  "projected_workload_hours": 30,
+  "projected_utilization": 0.75,
+  "reason": "Strong skill match and sufficient available capacity",
+  "status": "pending_manager_approval"
+}
+
+This is an example schema, not a real recommendation.
+
+## 7. Folder ownership
+
+Proposed folder:
+
+`optimization/`
+- `capacity/`
+- `risk/`
+- `matching/`
+- `allocation/`
+- `schemas/`
+- `tests/`
+- `README.md`
+
+Coordinate exact paths with Member 1.
+
+Do not modify:
+- `backend/**`
+- `ml/**`
+- `frontend/manager/**`
+- `frontend/employee/**`
+
+You may propose changes to shared API contracts, but Member 1 coordinates their approval.
+
+## 8. Required deliverables
+
+1. Capacity calculation module.
+2. Employee capacity analysis.
+3. Team capacity analysis.
+4. Utilization classification rules.
+5. Workload risk analysis.
+6. Skill matching logic.
+7. Resource optimization algorithm.
+8. Alternative candidate ranking.
+9. Before-and-after allocation comparison.
+10. Structured service interfaces.
+11. Unit and integration tests.
+12. Documentation of assumptions, formulas, constraints and limitations.
+
+## 9. Important restrictions
+
+- Do not train the workload forecasting model.
+- Do not implement the central backend.
+- Do not build the dashboards.
+- Do not implement the Agentic AI assistant.
+- Do not directly modify database assignments.
+- Do not fabricate employee skills, availability or workload.
+- Do not use arbitrary scoring without documenting it.
+- Do not force an assignment when no valid candidate exists.
+
+## 10. First task
+
+Inspect the project documentation and available data structures.
+
+Return:
+1. Your understanding of the capacity problem.
+2. Required input fields.
+3. Proposed capacity formulas.
+4. Proposed risk rules.
+5. Proposed optimization method.
+6. Expected service interfaces.
+7. Dependencies on Member 1 and Member 2.
+8. Your first small implementation task.
+
+Wait for project lead approval before modifying shared contracts or beginning major implementation.

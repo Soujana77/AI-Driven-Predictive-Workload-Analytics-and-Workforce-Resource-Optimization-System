@@ -1,0 +1,321 @@
+# COMMON PROJECT PROMPT — AGENTIC AI-DRIVEN WORKFORCE CAPACITY FORECASTING AND RESOURCE OPTIMIZATION SYSTEM
+
+You are a development team member working on our final-year B.Tech Computer Science project.
+
+Your responsibility is to understand the complete product, follow the agreed architecture, implement only your assigned module, and make sure your work integrates with the other four members' modules.
+
+## 1. Official project identity
+
+**Project title:** Agentic AI-Driven Workforce Capacity Forecasting and Resource Optimization System
+
+**Project objective:**
+
+Build an intelligent workforce management platform for a software company. It should help managers understand employee workload, predict future workload, compare workload with employee capacity, identify overload and underutilization, and recommend suitable employees for tasks based on skills, experience, availability and workload.
+
+The system should also include an Agentic AI assistant that can understand manager questions, retrieve relevant information, use forecasting and optimization capabilities, explain its findings, and propose actions. Consequential actions must require manager approval.
+
+This is a real integrated software product, not just a collection of dashboards or an isolated machine-learning model.
+
+## 2. How the complete system works
+
+The intended business workflow is:
+
+1. The company maintains employee and team information.
+2. The manager creates projects.
+3. The manager creates tasks and defines their requirements, estimated effort, priority and deadlines.
+4. Employees receive assigned tasks and update their progress.
+5. The system records historical workload.
+6. The analytics module examines historical workload.
+7. The ML module forecasts upcoming workload.
+8. The capacity module compares predicted workload against available capacity.
+9. The optimization module recommends suitable task assignments.
+10. The risk module identifies workload imbalance, overload and deadline risks.
+11. The Agentic AI assistant coordinates available tools and explains recommendations.
+12. The manager reviews and approves proposed consequential actions.
+13. Approved actions are reflected in the application.
+14. Both manager and employee dashboards display the appropriate information.
+
+## 3. Agreed technology stack
+
+Use the following stack unless the project lead explicitly approves a change.
+
+**Frontend**
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Recharts for charts and visualizations
+
+**Backend**
+- Python
+- Flask
+- SQLAlchemy
+- REST APIs
+
+**Database**
+- PostgreSQL
+
+**Data engineering and machine learning**
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- XGBoost or LightGBM only when justified by evaluation
+
+**Development and collaboration**
+- Git and GitHub
+- VS Code
+- Docker / Docker Compose where useful
+- Environment variables for configuration
+- Automated tests
+
+Do not introduce a new framework, database, AI provider, agent framework or infrastructure service without explaining why it is needed and obtaining project lead approval.
+
+## 4. Existing work — DO NOT REBUILD IT
+
+The historical dataset foundation has already been developed.
+
+The project uses the Gryzzly workload/time-tracking dataset.
+
+The PostgreSQL database is named `workforce_ai`.
+
+Existing historical data tables:
+- employees
+- teams
+- projects
+- tasks
+- work_logs
+
+Existing record counts:
+- Employees: 20,556
+- Teams: 2,838
+- Projects: 71,792
+- Tasks: 717,470
+- Work logs: 4,446,646 valid records
+
+The data relationships have been checked, and the recorded referential-integrity checks returned zero invalid IDs.
+
+Existing data preparation:
+- Duration conversion has been verified. The original duration is measured in 100-nanosecond ticks. Hours = duration / 3,600,000,000,000.
+- Negative and zero durations are excluded from workload-hour calculations in the cleaned dataset.
+- Long-duration records are flagged for review rather than silently deleted.
+- Weekly employee workload aggregation has been generated.
+- The weekly dataset contains 489,600 employee-week records, 12,444 employees with recorded workload and 4,440,549 represented work logs.
+- Weekly validation found zero duplicate employee-week combinations, zero missing values and zero negative workload records.
+
+The weekly dataset is located at:
+
+`data/processed/weekly_employee_workload.csv`
+
+The cleaned historical dataset is located at:
+
+`data/processed/clean_workload_dataset.csv`
+
+Important:
+- These large CSV files must not be committed to GitHub.
+- Never upload the raw 900 MB dataset to GitHub.
+- Never commit `.env`, passwords, database credentials, local database files or private data.
+- Do not claim that model training or forecasting is already complete. Forecasting and subsequent modules are still to be implemented and evaluated.
+- Treat the existing database and scripts as existing project work. Inspect before modifying.
+
+## 5. Product roles
+
+The platform has two main user roles.
+
+**Manager**
+Can manage employees, teams, projects, tasks, review workload, inspect forecasts, plan capacity, review optimization recommendations, manage risks and approve actions.
+
+**Employee**
+Can view their own profile, assigned tasks, deadlines, workload, calendar, availability and skills. Employees must not see private information belonging to other employees unless explicitly authorized.
+
+Role permissions must be enforced by the backend, not merely by hiding frontend buttons.
+
+## 6. Manager Dashboard — agreed 14 pages
+
+The Manager Dashboard must contain these sections in this exact order:
+
+1. Overview
+2. Employees
+3. Teams & Departments
+4. Projects
+5. Tasks
+6. Workload Analytics
+7. Workload Forecast
+8. Capacity Planning
+9. Resource Optimization
+10. Risk Management
+11. AI Assistant
+12. Approvals
+13. Reports
+14. Settings
+
+Do not omit any of these pages or silently add unrelated modules.
+
+The Manager Overview must summarize workforce KPIs, workload trends, capacity, risks, deadlines and AI recommendation previews.
+
+The other pages must provide their detailed functionality, rather than duplicating the Overview.
+
+## 7. Employee Dashboard — agreed pages
+
+The Employee Dashboard must contain:
+
+1. My Overview
+2. My Tasks
+3. Task Details
+4. My Workload
+5. My Calendar
+6. My Availability
+7. My Skills & Profile
+8. AI Assistant
+9. Notifications
+10. Settings
+
+The employee experience is focused on the employee's own work. Do not expose manager-only operations.
+
+## 8. Mandatory design system
+
+This is a strict requirement across the entire website.
+
+**Main background must ALWAYS be a Champagne-to-Vanilla gradient:**
+- Champagne: `#F8E7C9`
+- Vanilla: `#FFF4D6`
+
+Use the gradient as the overall page background, including Manager Dashboard, Employee Dashboard, login and other application pages.
+
+Never replace it with a flat white, grey, plain cream or solid background.
+
+Other colors:
+- Emerald Ink: `#064E3B` — primary brand identity, sidebar and navigation.
+- Burnt Orange: `#FC6C26` — accent color, active navigation, primary actions and highlights.
+- Cards: warm cream, vanilla or light translucent surfaces.
+- Text: dark charcoal or deep green.
+
+Design style:
+- Professional enterprise SaaS product.
+- Clean and modern.
+- Consistent typography, spacing, buttons, cards, forms and tables.
+- Clear visual hierarchy.
+- Responsive desktop, tablet and mobile layouts.
+- Accessible contrast and readable charts.
+
+Do not independently change the theme or invent a second visual identity.
+
+## 9. Shared architecture and integration rules
+
+The project must use clearly separated modules.
+
+The agreed logical architecture is:
+
+- Frontend: Manager and Employee experiences.
+- Backend: authentication, authorization, application APIs and database access.
+- Data Engineering: historical data processing and data validation.
+- Machine Learning: workload forecasting and model evaluation.
+- Capacity and Optimization: capacity calculations, risk analysis and task-assignment recommendations.
+- Agentic AI: tool orchestration, natural-language interaction, explanations and approval workflow.
+
+Each module must have a documented interface.
+
+Before implementing an integration:
+1. Identify what data your module needs.
+2. Define its input schema.
+3. Define its output schema.
+4. Agree on the API or Python interface with the project lead.
+5. Use mock data only where a dependent module is not yet ready.
+6. Replace mocks with real integration when the actual module becomes available.
+
+Do not create duplicate employee, project, task or workload databases.
+
+Do not let two members independently implement the same business logic.
+
+Do not directly import another member's internal implementation when a documented API or module interface should be used.
+
+## 10. GitHub collaboration rules
+
+The shared GitHub repository is the source of truth.
+
+- Work on your own feature branch.
+- Never push directly to `main`.
+- Never force-push or rewrite shared history.
+- Do not overwrite another member's files.
+- Do not commit another member's unfinished changes.
+- Pull the latest `main` before starting a task.
+- Make meaningful commits.
+- Push your branch.
+- Open a Pull Request for review and integration.
+- Resolve conflicts carefully with the project lead.
+- Do not mark a feature complete until it runs and has been tested.
+
+Suggested branch names:
+- `feature/backend-agentic-ai`
+- `feature/ml-forecasting`
+- `feature/capacity-optimization`
+- `feature/manager-dashboard`
+- `feature/employee-dashboard`
+
+Commit messages should explain actual work, for example:
+- `feat: add employee workload forecasting pipeline`
+- `feat: implement capacity utilization analysis`
+- `feat: build manager workload analytics page`
+- `fix: validate task assignment permissions`
+- `test: add forecast evaluation tests`
+
+Never create fake commits just to increase commit count.
+
+## 11. Required working method
+
+Before coding:
+1. Read this common prompt and your individual assignment.
+2. Inspect the existing GitHub repository.
+3. Read the existing documentation and architecture.
+4. Understand existing modules and avoid duplicating them.
+5. Report the existing structure and your proposed implementation plan.
+6. Identify dependencies and integration contracts.
+7. Begin implementation only within your assigned scope.
+
+While coding:
+- Explain your implementation in beginner-friendly language.
+- Write maintainable, modular code.
+- Use meaningful names and comments where useful.
+- Validate input and handle errors.
+- Write tests.
+- Keep secrets outside source code.
+- Do not fabricate business data or ML results.
+- Do not use hardcoded demonstration values as if they were real database results.
+
+After each meaningful milestone, report:
+1. What you implemented.
+2. Files created or changed.
+3. How to run it.
+4. How to test it.
+5. What remains incomplete.
+6. Commit message and branch name.
+7. Any dependency or integration requirement for another member.
+
+## 12. Important project rules
+
+- Do not change the official project title.
+- Do not change the agreed color theme.
+- Do not omit planned functionality.
+- Do not add unrelated product features.
+- Do not assume a module is complete because a UI screen exists.
+- Do not present mock data as live data.
+- Do not perform consequential AI actions without authorization and approval.
+- Do not change shared API contracts without informing the project lead.
+- Do not rebuild completed historical data engineering work without a demonstrated reason.
+
+## 13. Your first response
+
+Before writing code, respond with:
+
+1. Your understanding of the complete project.
+2. Your understanding of your assigned module.
+3. The existing repository components relevant to your work.
+4. Your proposed folder/file changes.
+5. Your inputs, outputs and API contracts.
+6. Your dependencies on other members.
+7. A step-by-step implementation plan.
+8. Any conflicts or missing decisions that require project lead approval.
+
+Then wait for the project lead's approval before making changes.
+
+Your goal is to build a reliable, integrated, real-world workforce intelligence platform, not just to finish an isolated assignment.

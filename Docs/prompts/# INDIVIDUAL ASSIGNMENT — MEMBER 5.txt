@@ -1,0 +1,416 @@
+# INDIVIDUAL ASSIGNMENT — MEMBER 5
+# EMPLOYEE DASHBOARD — FRONTEND DEVELOPMENT
+
+You are Member 5 of the project:
+
+**Agentic AI-Driven Workforce Capacity Forecasting and Resource Optimization System**
+
+Your responsibility is to develop the complete Employee Dashboard frontend using React, TypeScript, Vite and Tailwind CSS.
+
+You own the employee-facing user experience. You do not own the Manager Dashboard, backend, ML forecasting, optimization engine or Agentic AI implementation.
+
+## 1. Your objective
+
+Build an employee workspace that allows each employee to:
+
+- See their assigned work.
+- Understand task priorities and deadlines.
+- Track task progress.
+- View their workload.
+- View their work calendar.
+- Manage or report their availability through authorized workflows.
+- View their skills and profile.
+- Ask the AI assistant questions about their own work.
+- Receive relevant notifications.
+- Manage personal application settings.
+
+The dashboard must be useful, simple and professional. It should not expose manager-only controls.
+
+## 2. Mandatory design system
+
+The design must match the Manager Dashboard.
+
+### Main background
+
+Use a permanent Champagne-to-Vanilla gradient:
+
+- Champagne: `#F8E7C9`
+- Vanilla: `#FFF4D6`
+
+The entire Employee Dashboard must use this gradient as its main background.
+
+Never use a flat white, grey or solid cream background instead.
+
+### Other colors
+
+- Emerald Ink: `#064E3B` — brand identity and navigation.
+- Burnt Orange: `#FC6C26` — important actions, highlights and active navigation.
+- Vanilla/warm cream — cards and surfaces.
+- Deep green/dark charcoal — text.
+
+### Visual style
+
+- Professional enterprise SaaS.
+- Modern and uncluttered.
+- Rounded cards and subtle shadows.
+- Consistent typography and spacing.
+- Clear task status indicators.
+- Readable charts.
+- Responsive desktop, tablet and mobile layouts.
+
+Use the same design tokens and overall identity as the Manager Dashboard. Do not create a separate theme.
+
+## 3. Global layout
+
+Create a reusable Employee Dashboard shell.
+
+**Sidebar navigation:**
+
+1. My Overview
+2. My Tasks
+3. My Workload
+4. My Calendar
+5. My Availability
+6. My Skills & Profile
+7. AI Assistant
+8. Notifications
+9. Settings
+
+Task Details should be accessible from My Tasks and relevant dashboard links, rather than becoming an extra top-level section.
+
+**Top bar:**
+- Current page title.
+- Notifications.
+- Employee profile.
+- Relevant date information.
+
+**Main area:**
+- Page-specific information.
+- Relevant filters and actions.
+- Clear loading, empty and error states.
+
+## 4. Build all 10 agreed pages/views
+
+### Page 1: My Overview
+
+Purpose: Give the employee a quick view of their own work.
+
+Display:
+- My assigned tasks.
+- Tasks completed.
+- Tasks in progress.
+- Tasks due soon.
+- My workload summary.
+- Weekly workload chart.
+- Upcoming deadlines.
+- Recent notifications.
+- Relevant AI assistance preview.
+
+Actions:
+- Open a task.
+- View all tasks.
+- View workload.
+- Open calendar.
+- Ask the AI assistant.
+
+Only show information belonging to the authenticated employee.
+
+### Page 2: My Tasks
+
+Purpose: Help employees understand and manage their assigned tasks.
+
+Task list:
+- Task title and ID.
+- Project.
+- Priority.
+- Due date.
+- Estimated effort.
+- Status.
+
+Statuses:
+- To Do.
+- In Progress.
+- Completed.
+- Blocked.
+
+Features:
+- Filter by status.
+- Filter by priority.
+- Sort by due date.
+- Search tasks.
+- Open task details.
+
+Actions, subject to backend permissions:
+- Update task status.
+- Report a task as blocked.
+- View task details.
+
+Employees must not be able to change another employee's assignment.
+
+### Page 3: Task Details
+
+Display:
+- Task title.
+- Task description.
+- Task ID.
+- Related project.
+- Assigned employee.
+- Priority.
+- Estimated effort.
+- Actual effort, if available.
+- Start date.
+- Due date.
+- Current status.
+- Relevant task history.
+
+Actions:
+- Update allowed task status.
+- Report a blocker.
+- View related project details, where authorized.
+
+Do not display manager-only assignment controls.
+
+### Page 4: My Workload
+
+Purpose: Help the employee understand their own work over time.
+
+Display:
+- Historical workload.
+- Current workload, where available.
+- Predicted workload, where available.
+- Weekly workload trend.
+- Capacity utilization, where authorized.
+- Upcoming workload.
+- Workload status.
+
+Clearly distinguish historical, current and predicted workload.
+
+Do not show fabricated forecasts.
+
+Do not expose other employees' workload records.
+
+### Page 5: My Calendar
+
+Purpose: Give the employee a time-based view of their work.
+
+Display:
+- Assigned task deadlines.
+- Task start dates where available.
+- Upcoming tasks.
+- Important project dates where authorized.
+- Weekly and monthly calendar views.
+
+Actions:
+- Open task details.
+- Filter tasks.
+- Navigate between dates.
+
+Do not invent meetings, appointments or events. This page is for the agreed work-planning scope.
+
+### Page 6: My Availability
+
+Purpose: Display and manage the employee's working availability.
+
+Display:
+- Standard working hours.
+- Working days.
+- Recorded availability.
+- Approved unavailability, if the backend supports it.
+- Relevant capacity information.
+
+Actions:
+- View availability.
+- Submit an availability update or request, if supported by the backend.
+- Edit permitted availability fields.
+
+Do not introduce an unplanned leave-management module.
+
+All availability changes must be validated and stored by the backend.
+
+### Page 7: My Skills & Profile
+
+Display:
+- Employee name.
+- Employee ID.
+- Role.
+- Team.
+- Professional profile information.
+- Skills.
+- Skill proficiency, if recorded.
+- Experience, if recorded.
+- Working preferences or availability information where appropriate.
+
+Actions:
+- View profile.
+- Edit permitted personal information.
+- Update skills only if authorized by the backend.
+
+Do not allow employees to edit protected company or historical records.
+
+### Page 8: AI Assistant
+
+Build an employee-facing conversational interface.
+
+Example questions:
+- What tasks should I focus on today?
+- Which of my tasks are due soon?
+- What is my workload next week?
+- Show my pending tasks.
+- Explain the priority of this task.
+- Help me understand my current workload.
+
+The assistant must:
+- Use authenticated employee identity.
+- Retrieve only authorized personal information.
+- Provide grounded answers.
+- Clearly identify unavailable information.
+- Never reveal another employee's private information.
+- Never make manager-only decisions.
+- Never independently reassign tasks or modify protected records.
+
+Connect the UI to Member 1's AI Assistant API.
+
+Do not build a separate AI backend.
+
+### Page 9: Notifications
+
+Display relevant notifications such as:
+- New task assigned.
+- Task deadline approaching.
+- Task assignment updated.
+- Task status changes.
+- Relevant manager communication or approval outcomes, if supported.
+- System notifications.
+
+Features:
+- Unread indicator.
+- Read/unread state.
+- Notification date.
+- Link to relevant task or page.
+- Mark as read, if supported.
+
+Do not invent notifications.
+
+### Page 10: Settings
+
+Display:
+- Employee account information.
+- Profile preferences.
+- Notification preferences.
+- Date/time and display preferences.
+
+Only expose settings that are relevant to employees and supported by the backend.
+
+Do not include manager-wide workforce planning or system administration settings.
+
+## 5. Technical implementation
+
+Use:
+- React.
+- TypeScript.
+- Vite.
+- Tailwind CSS.
+- Recharts where charts are needed.
+
+Proposed structure:
+
+`frontend/employee/`
+- `src/components/`
+- `src/layouts/`
+- `src/pages/`
+- `src/features/overview/`
+- `src/features/tasks/`
+- `src/features/workload/`
+- `src/features/calendar/`
+- `src/features/availability/`
+- `src/features/profile/`
+- `src/features/assistant/`
+- `src/features/notifications/`
+- `src/features/settings/`
+- `src/services/`
+- `src/types/`
+- `src/hooks/`
+- `src/utils/`
+
+Confirm the exact repository structure with Member 1 and coordinate shared design components with Member 4.
+
+## 6. Backend integration
+
+Member 1 owns the Flask backend and API contracts.
+
+Your responsibility:
+- Obtain documented API endpoints.
+- Define TypeScript types matching backend response schemas.
+- Use a centralized API client.
+- Connect all pages to authorized APIs.
+- Handle loading and error states.
+- Handle empty task lists and unavailable forecast information.
+- Use authenticated employee identity.
+- Avoid hardcoding employee IDs or credentials.
+- Use mock data only for clearly identified temporary development.
+
+Important: Do not rely on frontend-only role checks. The backend must enforce permissions.
+
+## 7. Folder ownership
+
+Your primary ownership:
+
+`frontend/employee/**`
+
+Coordinate shared design tokens and reusable components with Member 4.
+
+Do not modify:
+- `backend/**`
+- `ml/**`
+- `optimization/**`
+- `frontend/manager/**`
+
+Do not change shared API contracts without Member 1's approval.
+
+## 8. Required deliverables
+
+1. Employee Dashboard layout.
+2. Sidebar and navigation.
+3. My Overview.
+4. My Tasks.
+5. Task Details.
+6. My Workload.
+7. My Calendar.
+8. My Availability.
+9. My Skills & Profile.
+10. AI Assistant interface.
+11. Notifications.
+12. Settings.
+13. Backend API integration.
+14. Responsive design.
+15. Reusable components.
+16. Frontend tests.
+17. Instructions to run the application.
+
+## 9. Important restrictions
+
+- Do not implement the Manager Dashboard.
+- Do not implement backend APIs.
+- Do not train forecasting models.
+- Do not implement resource optimization.
+- Do not expose other employees' private information.
+- Do not add payroll, attendance, recruitment or unrelated modules.
+- Do not fabricate task, workload or notification data.
+- Do not independently modify task assignments.
+- Do not change the agreed color theme.
+
+## 10. First task
+
+Inspect the repository and common project instructions.
+
+Return:
+1. Your understanding of the Employee Dashboard.
+2. Your proposed page/component structure.
+3. Proposed routes for all pages.
+4. Shared design tokens and reusable component plan.
+5. Required API endpoints.
+6. Permission and privacy considerations.
+7. Dependencies on Member 1 and Member 4.
+8. Your first small implementation task.
+
+Wait for project lead approval before modifying shared files or beginning major implementation.

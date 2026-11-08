@@ -1,0 +1,261 @@
+# INDIVIDUAL ASSIGNMENT — MEMBER 2
+# MACHINE LEARNING AND WORKLOAD FORECASTING
+
+You are Member 2 of the project:
+
+**Agentic AI-Driven Workforce Capacity Forecasting and Resource Optimization System**
+
+Your responsibility is to build the machine-learning pipeline that predicts future employee and team workload from historical workforce data.
+
+You own the forecasting module. You do not own the central backend, database schema, resource optimization engine or frontend.
+
+## 1. Your objective
+
+Build a reliable forecasting system that answers:
+
+- How much workload is an employee likely to have next week?
+- How will a team's workload change?
+- What workload should the company expect over the next several weeks?
+- How accurate are the predictions?
+- How uncertain are the predictions?
+
+The predictions must be based on historical data and evaluated properly.
+
+Do not create arbitrary predictions simply to populate dashboard charts.
+
+## 2. Existing dataset
+
+The project already has a processed weekly employee workload dataset:
+
+`data/processed/weekly_employee_workload.csv`
+
+It contains:
+- 489,600 employee-week records.
+- 12,444 employees with recorded workload.
+- 4,440,549 represented work logs.
+- Weekly employee-level workload.
+- Earliest week: 2013-07-08.
+- Latest week: 2029-12-31.
+- Total recorded workload: approximately 16,747,213.14 hours.
+
+The source database is PostgreSQL `workforce_ai`.
+
+The dataset has been validated for:
+- Duplicate employee-week combinations.
+- Missing values.
+- Invalid dates.
+- Negative workload records.
+
+Important caveats:
+- The dataset contains historical records through future calendar dates. Investigate the time distribution before using them as genuine historical observations.
+- Do not assume every recorded week is a genuine completed historical week.
+- Investigate the extreme weekly workload of 2,002 hours.
+- Do not blindly remove or cap outliers without documenting and evaluating the effect.
+- Employees without recorded workload are not automatically employees with zero workload.
+- Do not create employee-week records indiscriminately without considering employment dates and data coverage.
+- Do not commit large datasets to GitHub.
+
+## 3. Your workstream
+
+### A. Data understanding
+
+Inspect the weekly dataset.
+
+Study:
+- Date distribution
+- Employee distribution
+- Workload distribution
+- Weekly and monthly patterns
+- Missing employee-weeks
+- Extreme values
+- Employee activity periods
+- Team-level workload patterns
+
+Document assumptions and limitations.
+
+### B. Feature engineering
+
+Investigate useful forecasting features, such as:
+
+- Previous week workload (lag 1)
+- Previous two or four weeks
+- Previous 8 or 12 weeks
+- Rolling mean
+- Rolling median
+- Rolling standard deviation
+- Workload trend
+- Week of year
+- Month
+- Quarter
+- Team information, where reliable
+- Relevant project/task activity, where available
+
+Ensure every feature uses only information that would have been available at prediction time.
+
+Avoid data leakage.
+
+### C. Model development
+
+Build and compare appropriate forecasting approaches.
+
+Start with simple baselines:
+- Last observed workload
+- Historical mean
+- Moving average
+
+Then evaluate suitable models, for example:
+- Linear Regression
+- Random Forest
+- Gradient Boosting
+- XGBoost or LightGBM, if justified
+- Time-series approaches where suitable
+
+Do not choose a complicated model just because it is popular.
+
+### D. Forecast targets
+
+Define and document:
+- Employee-level weekly workload forecast.
+- Team-level weekly workload forecast.
+- Company-level weekly workload forecast, if supported.
+
+The initial target should be next week's workload. Extend the forecast horizon only after the first approach is validated.
+
+### E. Model evaluation
+
+Use chronological, time-based training, validation and test splits.
+
+Do not randomly split time-series records in a way that leaks future information into training.
+
+Evaluate suitable metrics:
+- MAE
+- RMSE
+- MAPE only when its assumptions are appropriate
+- WAPE or another suitable aggregate error measure
+
+Compare every candidate model against baseline performance.
+
+Report:
+- Training period
+- Validation period
+- Test period
+- Metrics
+- Model limitations
+- Performance by employee/team where sample sizes permit
+
+## 4. Forecast output contract
+
+Coordinate with Member 1 before finalizing the interface.
+
+The forecasting service should return a structured result conceptually like:
+
+{
+  "employee_id": "E123",
+  "forecast_week": "2026-11-09",
+  "predicted_workload_hours": 32.5,
+  "lower_bound_hours": 27.0,
+  "upper_bound_hours": 38.0,
+  "model_version": "forecast_v1",
+  "generated_at": "timestamp"
+}
+
+The values above are examples of structure only, not real predictions.
+
+For team forecasts, provide the team identifier, forecast week, predicted workload and uncertainty where supported.
+
+Include metadata:
+- Model version
+- Forecast horizon
+- Generation time
+- Input data period
+- Evaluation metrics
+- Forecast status
+
+Never invent confidence intervals. If the model does not support reliable uncertainty estimates, clearly omit them or report their availability as unsupported.
+
+## 5. Integration requirements
+
+Member 1 owns the Flask backend and will expose the API integration.
+
+Your responsibility:
+- Build the forecasting code as a modular Python package.
+- Provide a documented Python interface or service interface.
+- Document input and output schemas.
+- Provide a small sample response.
+- Explain dependencies and how to run the module.
+- Coordinate the API with Member 1.
+
+Member 3 will consume your predictions to compare workload against capacity.
+
+Member 4 will display forecasts on the Manager Dashboard.
+
+The AI Assistant will retrieve your results through the authorized backend integration.
+
+Do not independently create a second application backend.
+
+## 6. Folder ownership
+
+Proposed folder:
+
+`ml/`
+- `data/`
+- `preprocessing/`
+- `features/`
+- `models/`
+- `evaluation/`
+- `forecasting/`
+- `tests/`
+- `README.md`
+
+Coordinate exact folder names with Member 1 before creating files.
+
+Do not modify:
+- `backend/**`
+- `frontend/manager/**`
+- `frontend/employee/**`
+- `optimization/**`
+
+If you need a change to a shared contract, propose it to Member 1 rather than editing another member's files.
+
+## 7. Required deliverables
+
+1. Dataset exploration report.
+2. Data cleaning and feature engineering pipeline.
+3. Baseline forecasting implementation.
+4. Candidate ML models.
+5. Model comparison and evaluation report.
+6. Selected trained model and reproducible loading method.
+7. Employee-level weekly forecast.
+8. Team-level forecast where supported.
+9. Forecasting service interface.
+10. Tests.
+11. Instructions to run and reproduce results.
+12. Documentation of limitations and data assumptions.
+
+## 8. Important restrictions
+
+- Do not build the Manager Dashboard.
+- Do not build the Employee Dashboard.
+- Do not implement the Agentic AI assistant.
+- Do not implement task optimization.
+- Do not create fake forecasts.
+- Do not use random train/test splits for time-series evaluation.
+- Do not silently remove extreme records.
+- Do not commit large datasets or model artifacts without project lead approval.
+- Do not claim forecasting is complete without baseline comparison and test evaluation.
+
+## 9. First task
+
+Inspect the existing weekly dataset and project scripts.
+
+Return:
+1. Dataset findings.
+2. Potential data leakage risks.
+3. Recommended forecasting target.
+4. Proposed feature set.
+5. Proposed chronological split.
+6. Baseline model plan.
+7. Forecast output schema.
+8. Your first small implementation task.
+
+Wait for approval before changing shared files or starting major model development.
