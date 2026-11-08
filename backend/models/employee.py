@@ -1,24 +1,25 @@
+
 from extensions import db
+from sqlalchemy.dialects.postgresql import UUID
 
 
 class Employee(db.Model):
+    """
+    Maps to the existing historical employees table.
+    """
+
     __tablename__ = "employees"
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(150), unique=True)
-    role = db.Column(db.String(100))
-    department = db.Column(db.String(100))
-    experience_years = db.Column(db.Numeric(4, 1))
-    weekly_capacity_hours = db.Column(
-        db.Numeric(5, 2),
-        default=40
+    id = db.Column(
+        UUID(as_uuid=False),
+        primary_key=True
     )
-    availability_status = db.Column(
-        db.String(50),
-        default="Available"
-    )
+
     created_at = db.Column(
-        db.DateTime,
-        server_default=db.func.now()
+        db.DateTime(timezone=True)
+    )
+
+    team_id = db.Column(
+        UUID(as_uuid=False),
+        nullable=True
     )

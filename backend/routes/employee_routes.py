@@ -1,3 +1,4 @@
+
 from flask import Blueprint, jsonify
 from models.employee import Employee
 
@@ -10,24 +11,23 @@ employee_bp = Blueprint(
 
 @employee_bp.route("/", methods=["GET"])
 def get_employees():
-    employees = Employee.query.all()
+
+    employees = Employee.query.limit(100).all()
 
     result = []
 
     for employee in employees:
         result.append({
             "id": employee.id,
-            "name": employee.name,
-            "email": employee.email,
-            "role": employee.role,
-            "department": employee.department,
-            "experience_years": float(employee.experience_years)
-            if employee.experience_years is not None else None,
-            "weekly_capacity_hours": float(
-                employee.weekly_capacity_hours
+            "team_id": employee.team_id,
+            "created_at": (
+                employee.created_at.isoformat()
+                if employee.created_at else None
             )
-            if employee.weekly_capacity_hours is not None else None,
-            "availability_status": employee.availability_status
         })
 
-    return jsonify(result)
+    return jsonify({
+        "status": "success",
+        "count": len(result),
+        "employees": result
+    })
