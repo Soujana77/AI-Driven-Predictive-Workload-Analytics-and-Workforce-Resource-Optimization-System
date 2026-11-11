@@ -7,6 +7,7 @@ def register_routes(app):
     from routes.task_routes import task_bp
     from routes.skill_routes import skill_bp
     from routes.employee_skill_routes import employee_skill_bp
+    from routes.capacity_routes import capacity_bp
 
     app.register_blueprint(employee_bp)
     app.register_blueprint(profile_bp)
@@ -14,3 +15,4 @@ def register_routes(app):
     app.register_blueprint(task_bp)
     app.register_blueprint(skill_bp)
     app.register_blueprint(employee_skill_bp)
+    app.register_blueprint(capacity_bp)
